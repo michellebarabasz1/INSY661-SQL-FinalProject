@@ -1,0 +1,787 @@
+--1) Properly commented SQL script for creating tables with data and integrity constraints.
+--2) Properly commented (i.e. mention the objective of each query) SQL script for executing
+--sample queries.
+
+
+
+-- Create the Brand Table
+CREATE TABLE Brand (
+    BrandID INT PRIMARY KEY,
+    Name VARCHAR(30)
+);
+
+-- Create the Screen Table
+CREATE TABLE Screen (
+    ScreenID INT PRIMARY KEY,
+    Resolution VARCHAR(20),
+    Type VARCHAR(50)
+);
+
+-- Create the GPU Table
+CREATE TABLE GPU (
+    GPUID INT PRIMARY KEY,
+    GPUBrand INT,
+    GPUModel VARCHAR(50),
+    FOREIGN KEY (GPUBrand) REFERENCES Brand (BrandID)
+);
+
+-- Create the CPU Table
+CREATE TABLE CPU (
+    CPUID INT PRIMARY KEY,
+    CPUBrand INT,
+    CPUModel VARCHAR(50),
+  FOREIGN KEY (CPUBrand) REFERENCES Brand (BrandID)
+  
+);
+
+-- Create the Memory Table
+CREATE TABLE Memory (
+    MemoryID INT PRIMARY KEY,
+    MemorySize INT,
+    MemoryBrand INT,
+    FOREIGN KEY (MemoryBrand) REFERENCES Brand (BrandID)
+);
+
+-- Create the Customer Table
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    City VARCHAR(20),
+    Street VARCHAR(20),
+    Province VARCHAR(20),
+    PostalCode VARCHAR(70),
+    Country VARCHAR(20)
+);
+
+-- Create the Order Table
+CREATE TABLE OrderTable (
+    OrderID INT PRIMARY KEY,
+    Datez DATE,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+-- Create the Laptop Table
+CREATE TABLE Laptop (
+    LaptopID INT PRIMARY KEY,
+    Size VARCHAR(20),
+    Model VARCHAR(30),
+    Yearz INT,
+    Price DECIMAL(10, 2),
+    Description TEXT,
+    BrandID INT,
+    GPUID INT,
+    CPUID INT,
+    MemoryID INT,
+    ScreenID INT,
+    FOREIGN KEY (BrandID) REFERENCES Brand(BrandID),
+    FOREIGN KEY (GPUID) REFERENCES GPU(GPUID),
+    FOREIGN KEY (CPUID) REFERENCES CPU(CPUID),
+    FOREIGN KEY (MemoryID) REFERENCES Memory(MemoryID),
+    FOREIGN KEY (ScreenID) REFERENCES Screen(ScreenID)
+);
+
+-- Create the OrderQuantity Table
+CREATE TABLE OrderQuantity (
+    LaptopID INT,
+    OrderID INT,
+    Quantity INT,
+    FOREIGN KEY (LaptopID) REFERENCES Laptop(LaptopID),
+    FOREIGN KEY (OrderID) REFERENCES OrderTable(OrderID),
+    PRIMARY KEY (LaptopID, OrderID)
+);
+
+INSERT INTO Brand (BrandID, Name)
+VALUES
+    (1, 'Dell'),
+    (2, 'HP'),
+    (3, 'Lenovo'),
+    (4, 'Asus'),
+    (5, 'Acer'),
+    (6, 'Apple'),
+    (7, 'MSI'),
+    (8, 'Samsung'),
+    (9, 'LG'),
+    (10, 'Sony'),
+    (11, 'NVIDIA'),
+    (12, 'AMD'),
+    (13, 'Intel'),
+    (14, 'Corsair'),
+    (15, 'G.skill'),
+    (16, 'Kingston'),
+    (17, 'Crucial'),
+    (18, 'HyperX'),
+    (19, 'ADATA'),
+    (20, 'Samsung'),
+    (21, 'Patriot'),
+    (22, 'TeamGroup');
+   
+    
+
+INSERT INTO Screen (ScreenID, Resolution, Type)
+VALUES
+    (1, '1920x1080', 'LED'),
+    (2, '2560x1440', 'IPS'),
+    (3, '3840x2160', 'OLED'),
+    (4, '1366x768', 'TN'),
+    (5, '3440x1440', 'Ultrawide'),
+    (6, '2560x1600', 'IPS'),
+    (7, '1920x1200', 'LED'),
+    (8, '2880x1800', 'Retina'),
+    (9, '5120x2880', '4K'),
+    (10, '1200x800', 'LED');
+
+INSERT INTO GPU (GPUID, GPUBrand, GPUModel)
+VALUES
+    (1, 11, 'GeForce RTX 3080'),
+    (2, 12, 'Radeon RX 6900 XT'),
+    (3, 11, 'GeForce RTX 3070'),
+    (4, 11, 'GeForce GTX 1660'),
+    (5, 12, 'Radeon RX 6800'),
+    (6, 11, 'GeForce RTX 3060 Ti'),
+    (7, 12, 'Radeon RX 6700 XT'),
+    (8, 11, 'GeForce GTX 1650'),
+    (9, 11, 'GeForce RTX 2080 Ti'),
+    (10, 12, 'Radeon RX 6600 XT'),
+    (11, 11, 'GeForce GTX 1080'),
+    (12, 12, 'Radeon RX 5500 XT'),
+    (13, 11, 'GeForce RTX 3090'),
+    (14, 11, 'GeForce GTX 1050 Ti'),
+    (15, 12, 'Radeon RX 570'),
+    (16, 12, 'Radeon RX 6700'),
+    (17, 11, 'GeForce GTX 1070'),
+    (18, 11, 'GeForce GTX 1660 Ti'),
+    (19, 12, 'Radeon RX 5700'),
+    (20, 11, 'GeForce RTX 3060'),
+    (21, 6, 'M1'),
+    (22, 6, 'M1 Pro'),
+    (23, 6, 'M1 Max'),
+    (24, 6, 'M2'),
+    (25, 6, 'M2 Pro'),
+    (26, 6, 'M2 Max');
+   
+   
+INSERT INTO CPU (CPUID, CPUBrand, CPUModel)
+VALUES
+    (1, 13, 'Core i9-10900K'),
+    (2, 12, 'Ryzen 9 5900X'),
+    (3, 13, 'Core i7-11700K'),
+    (4, 12, 'Ryzen 7 5800X'),
+    (5, 13, 'Core i5-11600K'),
+    (6, 12, 'Ryzen 5 5600X'),
+    (7, 13, 'Core i9-11900K'),
+    (8, 12, 'Ryzen 9 5950X'),
+    (9, 13, 'Core i7-10700K'),
+    (10, 12, 'Ryzen 7 5700X'),
+    (11, 13, 'Core i5-11400'),
+    (12, 12, 'Ryzen 5 5500X'),
+    (13, 13, 'Core i9-12900K'),
+    (14, 12, 'Ryzen 9 6900X'),
+    (15, 13, 'Core i7-12700K'),
+    (16, 12, 'Ryzen 7 6700X'),
+    (17, 13, 'Core i5-12600K'),
+    (18, 12, 'Ryzen 5 6600X'),
+    (19, 13, 'Core i9-13900K'),
+    (20, 12, 'Ryzen 9 7900X'),
+    (21, 13, 'Core i7-13700K'),
+    (22, 12, 'Ryzen 7 7700X'),
+    (23, 13, 'Core i5-13600K'),
+    (24, 12, 'Ryzen 5 7600X'),
+    (25, 13, 'Core i9-14900K'),
+    (26, 12, 'Ryzen 9 8900X'),
+    (27, 13, 'Core i7-14700K'),
+    (28, 12, 'Ryzen 7 8700X'),
+    (29, 13, 'Core i5-14600K'),
+    (30, 12, 'Ryzen 5 8600X'),
+    (31, 6, 'M1'),
+    (32, 6, 'M1 Pro'),
+    (33, 6, 'M1 Max'),
+    (34, 6, 'M2'),
+    (35, 6, 'M2 Pro'),
+    (36, 6, 'M2 Max');
+    
+ INSERT INTO Memory (MemoryID, MemorySize, MemoryBrand)
+VALUES
+    (1, 16, 14),
+    (2, 32, 15),
+    (3, 8, 16),
+    (4, 64, 17),
+    (5, 16, 18),
+    (6, 32, 19),
+    (7, 8, 20),
+    (8, 16, 21),
+    (9, 32, 22),
+    (10, 8, 14),
+    (11, 16, 14),
+    (12, 64, 15),
+    (13, 16, 16),
+    (14, 32, 18),
+    (15, 8, 19);
+
+INSERT INTO Customer (CustomerID, Name, City, Street, Province, PostalCode, Country)
+VALUES
+    (1, 'John Doe', 'Toronto', '123 Main St', 'Ontario', 'M1A 1A1', 'Canada'),
+    (2, 'Jane Smith', 'Montreal', '456 Elm St', 'Quebec', 'H2B 2B2', 'Canada'),
+    (3, 'Robert Johnson', 'Vancouver', '789 Oak St', 'British Columbia', 'V6C 1A1', 'Canada'),
+    (4, 'Emily Brown', 'Quebec City', '987 Maple St', 'Quebec', 'G1A 1A1', 'Canada'),
+    (5, 'Michael Wilson', 'Calgary', '654 Pine St', 'Alberta', 'T2P 2P2', 'Canada'),
+    (6, 'Maria Martin', 'Ottawa', '321 Birch St', 'Ontario', 'K1A 1A1', 'Canada'),
+    (7, 'David Lee', 'Edmonton', '876 Cedar St', 'Alberta', 'T5J 2J2', 'Canada'),
+    (8, 'Sarah Taylor', 'Quebec City', '567 Oak St', 'Quebec', 'G1B 1B1', 'Canada'),
+    (9, 'William Brown', 'Winnipeg', '234 Elm St', 'Manitoba', 'R3C 3C3', 'Canada'),
+    (10, 'Jennifer Davis', 'Montreal', '543 Birch St', 'Quebec', 'H1C 1C1', 'Canada'),
+    (11, 'Daniel Rodriguez', 'Toronto', '876 Pine St', 'Ontario', 'M2D 2D2', 'Canada'),
+    (12, 'Linda Martinez', 'Quebec City', '345 Cedar St', 'Quebec', 'G1E 1E1', 'Canada'),
+    (13, 'James Thompson', 'Calgary', '654 Oak St', 'Alberta', 'T3F 3F3', 'Canada'),
+    (14, 'Patricia Hall', 'Vancouver', '987 Birch St', 'British Columbia', 'V6G 1G1', 'Canada'),
+    (15, 'Christopher Garcia', 'Edmonton', '876 Elm St', 'Alberta', 'T6H 2H2', 'Canada'),
+    (16, 'Barbara Martinez', 'Quebec City', '543 Pine St', 'Quebec', 'G1K 1K1', 'Canada'),
+    (17, 'Matthew Allen', 'Ottawa', '123 Cedar St', 'Ontario', 'K2L 2L2', 'Canada'),
+    (18, 'Elizabeth Adams', 'Montreal', '345 Birch St', 'Quebec', 'H2M 2M2', 'Canada'),
+    (19, 'David Young', 'Quebec City', '987 Pine St', 'Quebec', 'G1N 1N1', 'Canada'),
+    (20, 'Sarah Walker', 'Winnipeg', '234 Elm St', 'Manitoba', 'R3P 3P3', 'Canada'),
+    (21, 'Richard Lewis', 'Calgary', '654 Oak St', 'Alberta', 'T4R 4R4', 'Canada'),
+    (22, 'Maria Clark', 'Toronto', '987 Cedar St', 'Ontario', 'M5T 5T5', 'Canada'),
+    (23, 'Charles Turner', 'Vancouver', '543 Elm St', 'British Columbia', 'V6V 6V6', 'Canada'),
+    (24, 'Jessica Hernandez', 'Montreal', '876 Pine St', 'Quebec', 'H1W 1W1', 'Canada'),
+    (25, 'Matthew Hill', 'Quebec City', '345 Birch St', 'Quebec', 'G1Y 1Y1', 'Canada'),
+    (26, 'Amanda Miller', 'Edmonton', '123 Oak St', 'Alberta', 'T5Z 5Z5', 'Canada'),
+    (27, 'Karen Scott', 'Quebec City', '654 Elm St', 'Quebec', 'G1V 1V1', 'Canada'),
+    (28, 'Steven Baker', 'Calgary', '987 Cedar St', 'Alberta', 'T6X 6X6', 'Canada'),
+    (29, 'Michelle Perez', 'Ottawa', '543 Pine St', 'Ontario', 'K1Y 1Y1', 'Canada'),
+    (30, 'David Harris', 'Montreal', '234 Elm St', 'Quebec', 'H2Z 2Z2', 'Canada'),
+    (31, 'Laura Adams', 'Quebec City', '876 Oak St', 'Quebec', 'G1W 1W1', 'Canada'),
+    (32, 'Brian Nelson', 'Vancouver', '345 Cedar St', 'British Columbia', 'V6B 6B6', 'Canada'),
+    (33, 'Stephanie Rivera', 'Toronto', '123 Elm St', 'Ontario', 'M3X 3X3', 'Canada'),
+    (34, 'Ryan King', 'Quebec City', '654 Pine St', 'Quebec', 'G1Z 1Z1', 'Canada'),
+    (35, 'Rebecca Green', 'Calgary', '876 Cedar St', 'Alberta', 'T5A 5A5', 'Canada'),
+    (36, 'Kevin Mitchell', 'Montreal', '543 Oak St', 'Quebec', 'H1B 1B1', 'Canada'),
+    (37, 'Cynthia Carter', 'Quebec City', '234 Elm St', 'Quebec', 'G1M 1M1', 'Canada'),
+    (38, 'Thomas Turner', 'Edmonton', '987 Pine St', 'Alberta', 'T6M 6M6', 'Canada'),
+    (39, 'Angela Gray', 'Ottawa', '345 Cedar St', 'Ontario', 'K1Z 1Z1', 'Canada'),
+    (40, 'Daniel Hall', 'Montreal', '876 Oak St', 'Quebec', 'H2X 2X2', 'Canada');
+
+INSERT INTO Laptop (LaptopID, Size, Model, Yearz, Price, Description, BrandID, GPUID, CPUID, MemoryID, ScreenID)
+VALUES
+(1, '15.6', 'Dell XPS 15', 2021, 1999.99, 'Premium aluminum laptop with Intel i7 CPU and Nvidia RTX 3050 GPU', 1, 20, 7, 11, 2),
+(2, '14', 'MacBook Pro', 2022, 2799, 'Apple flagship laptop with M2 Pro chip and great screen', 6, 24, 32, 12, 6),
+(3, '17.3', 'Lenovo Legion 7', 2022, 2499.99, 'Gaming laptop with AMD Ryzen 7 5800H and RTX 3070', 3, 3, 4, 5, 1),
+(4, '13.3', 'HP Spectre x360', 2021, 1699, 'Convertible laptop with Intel i7, 16GB RAM and 512GB SSD', 2, 19, 9, 13, 7),
+(5, '15.6', 'Asus ROG Zephyrus', 2021, 1999, 'Ultra-thin gaming laptop with RTX 3060 and Ryzen 9 5900HS', 4, 6, 2, 11, 2),
+(6, '13.3', 'Acer Swift 3', 2022, 1099, 'Lightweight laptop with Intel i5-1235U and 512GB SSD', 5, null, 17, 3, 4),
+(7, '17.3', 'MSI GP77 Leopard', 2022, 2799, 'High-powered gaming laptop with i9-12900HK and RTX 3080 Ti', 7, 13, 7, 12, 1),
+(8, '15.6', 'Samsung Galaxy Book2 Pro', 2022, 1699, 'Thin and light laptop with Intel i7-1260P and great AMOLED screen', 8, 19, 15, 14, 2),
+(9, '13.3', 'LG Gram 16', 2022, 1599, 'Ultra-lightweight 16-inch laptop with i7-1260P and long battery life', 9, 15, 15, 5, 6),
+(10, '15.6', 'Sony VAIO Z', 2023, 3499, 'Premium convertible laptop with Core i9-12900H, RTX 3070 Ti, 4K screen', 10, 1, 7, 11, 3),
+(11, '15.6', 'Dell Inspiron 5593', 2020, 899, 'Budget laptop with Intel i3-1005G1 and 4GB RAM', 1, 8, 11, 10, 4),
+(12, '13.3', 'HP ProBook x360 435 G7', 2021, 1299, 'Thin and light business laptop with Intel i5-1135G7', 2, 12, 13, 13, 7),
+(13, '15.6', 'Lenovo IdeaPad Slim 5', 2022, 999, 'Lightweight laptop with AMD Ryzen 5 5500U and SSD', 3, 12, 16, 3, 1),
+(14, '17.3', 'Asus TUF Gaming A17', 2021, 1699, 'Premium gaming laptop with Ryzen 7 5800H and RTX 3060', 4, 6, 4, 5, 1),
+(15, '15.6', 'Acer Aspire 5', 2020, 749, 'Budget laptop for students with Intel i3-1115G4 and 256GB SSD', 5, 8, 11, 3, 4),
+(16, '13.3', 'Apple MacBook Air', 2022, 1299, 'Thin and light laptop from Apple with M2 chip', 6, 24, 34, 5, 8),
+(17, '17.3', 'MSI GS76 Stealth', 2023, 2799, 'Thin gaming laptop with i9-12900HX and RTX 3080 Ti', 7, 13, 19, 12, 1),
+(18, '15.6', 'Samsung Galaxy Book2 Pro', 2022, 1499, 'Premium thin laptop with Intel i7-1260P and SSD', 8, 19, 15, 11, 2),
+(19, '13.3', 'LG Gram 16', 2022, 1299, 'Ultra-light 16-inch laptop with i5-1240P and long battery life', 9, 15, 17, 5, 6),
+(20, '15.6', 'Sony VAIO FE', 2022, 1999, 'Premium clamshell laptop with Core i7-1185G7 and 16GB RAM', 10, 6, 9, 13, 2),
+(21, '14', 'Dell XPS 13', 2023, 1499, 'Premium thin-and-light laptop with Intel Core i5-1230U', 1, 18, 23, 3, 7),
+(22, '15.6', 'HP Envy x360', 2022, 1299, 'Budget 2-in-1 laptop with AMD Ryzen 5 5500U and 256GB SSD', 2, 12, 16, 3, 1),
+(23, '13.3', 'Lenovo Yoga 9i', 2023, 2499, 'Premium 2-in-1 laptop with Intel Core i7-1260P and 1TB SSD', 3, 19, 15, 11, 6),
+(24, '17.3', 'Asus ROG Strix G17', 2022, 2299, 'High-performance gaming laptop with RTX 3070 and i7-12700H', 4, 3, 15, 12, 1),
+(25, '15.6', 'Acer Swift 5', 2022, 1499, 'Ultra-thin and lightweight laptop with Intel Core i7-1255U', 5, 18, 23, 5, 7),
+(26, '13.3', 'MacBook Air', 2019, 1299, 'Thin and light laptop from Apple with dual-core Intel Core i5', 6, 21, 31, 3, 8),
+(27, '17.3', 'MSI GE76 Raider', 2022, 2799, 'High-powered gaming laptop with Intel Core i9-12900HK and RTX 3080 Ti', 7, 13, 19, 11, 1),
+(28, '15.6', 'Samsung Galaxy Book Pro 360', 2023, 1999, 'Premium 2-in-1 laptop with Intel Core i7-1260P and 16GB RAM', 8, 19, 15, 11, 2),
+(29, '13.3', 'LG Gram 14', 2022, 1299, 'Ultra-lightweight 14-inch laptop with Intel Core i5-1135G7', 9, 18, 13, 5, 7),
+(30, '15.6', 'Sony Vaio FE', 2023, 2499, 'Thin and light clamshell laptop with Intel Core i7-1260P and Nvidia RTX 3050', 10, 20, 15, 11, 2),
+(31, '15.6', 'Dell G5 15', 2020, 1299, 'Budget gaming laptop with Ryzen 7 4800H and GTX 1660 Ti', 1, 18, 4, 5, 1),
+(32, '14', 'HP Spectre x360', 2022, 1999, 'Premium 2-in-1 laptop with Intel Core i7-1255U and 16GB RAM', 2, 19, 23, 11, 6),
+(33, '15.6', 'Lenovo Legion 5', 2021, 1499, 'Gaming laptop with Ryzen 7 5800H and RTX 3060', 3, 6, 4, 3, 1),
+(34, '17.3', 'Asus ROG Strix SCAR 17', 2023, 2999, 'High-powered gaming laptop with i9-12900HK and RTX 3080 Ti', 4, 13, 19, 12, 1),
+(35, '15.6', 'Acer Nitro 5', 2022, 1299, 'Affordable gaming laptop with Ryzen 7 5800H and RTX 3050 Ti', 5, 20, 16, 5, 1),
+(36, '13.3', 'MacBook Pro', 2021, 1999, 'Thin and light laptop from Apple with M1 Pro chip', 6, 24, 32, 12, 6),
+(37, '17.3', 'MSI GE76 Raider', 2021, 2499, 'Powerful gaming laptop with i7-10870H and RTX 3070', 7, 3, 7, 14, 1),
+(38, '15.6', 'Samsung Galaxy Book Pro', 2021, 1699, 'Thin and lightweight laptop with i7-1165G7 and 512GB SSD', 8, 19, 9, 11, 2),
+(39, '13.3', 'LG Gram 13', 2023, 1299, 'Ultra-lightweight 13-inch laptop with i5-1230U', 9, 18, 23, 3, 7),
+(40, '15.6', 'Sony Vaio FE', 2021, 1999, 'Premium laptop with i7-1185G7 and RTX 3050 Ti graphics', 10, 20, 9, 11, 2),
+(41, '15.6', 'Dell Inspiron 15', 2022, 699, 'Budget laptop with AMD Athlon Silver 3050U and 4GB RAM', 1, null, 24, 10, 4),
+(42, '13.3', 'HP 14s', 2021, 749, ' budget laptop for students with Intel Celeron N4020 and 256GB SSD', 2, null, 11, 3, 7),
+(43, '15.6', 'Lenovo IdeaPad 3', 2022, 599, 'Entry-level laptop for basic use with Intel Pentium Silver N5030', 3, null, 23, 3, 1),
+(44, '15.6', 'Asus Vivobook 15', 2021, 749, 'Budget laptop with AMD Athlon Silver 3050U and 256GB SSD', 4, 12, 24, 3, 4),
+(45, '15.6', 'Acer Aspire 5', 2023, 649, 'Affordable laptop for students with Intel Pentium N6000 and 4GB RAM', 5, null, 11, 3, 4),
+(46, '13.3', 'MacBook Air', 2017, 849, 'Older thin MacBook Air with dual-core Intel Core i5', 6, 21, 31, 3, 8),
+(47, '17.3', 'MSI GF63 Thin', 2022, 899, 'Budget gaming laptop with GTX 1650 and i5-10300H', 7, 14, 9, 5, 1),
+(48, '15.6', 'Samsung Chromebook 4', 2022, 549, 'Budget Chromebook with Celeron N4000 and 4GB RAM', 8, null, 11, 3, 4),
+(49, '13.3', 'LG Gram 13', 2020, 799, 'Lightweight 13-inch laptop with 10th gen Intel Core i5', 9, 12, 13, 3, 7),
+(50, '15.6', 'VivoBook 15', 2020, 699, 'Cheap laptop for basic use with Intel Celeron N3350 and 4GB RAM', 10, null, 11, 3, 4);
+    
+    
+INSERT INTO OrderTable (OrderID, Datez, CustomerID)
+VALUES
+(1, '2020-01-15', 1),
+(2, '2021-03-31', 3),
+(3, '2022-05-28', 5),
+(4, '2020-07-12', 8),
+(5, '2021-02-17', 12),
+(6, '2022-04-30', 15),
+(7, '2020-11-29', 18),
+(8, '2021-01-03', 21),
+(9, '2022-06-15', 24),
+(10, '2020-09-27', 27),
+
+(11, '2021-02-07', 30),
+(12, '2022-04-19', 33),
+(13, '2020-12-16', 36),
+(14, '2021-05-11', 38),
+(15, '2022-07-03', 32),
+(16, '2020-08-22', 4),
+(17, '2021-01-28', 7),
+(18, '2022-03-14', 10),
+(19, '2020-11-15', 13),
+(20, '2021-06-29', 17),
+
+(21, '2022-02-21', 22),
+(22, '2020-10-03', 25),
+(23, '2021-07-06', 29),
+(24, '2022-01-25', 34),
+(25, '2020-09-11', 2),
+(26, '2021-03-17', 6),
+(27, '2022-05-01', 9),
+(28, '2020-12-30', 14),
+(29, '2021-04-24', 20),
+(30, '2022-06-12', 23),
+
+(31, '2020-08-06', 28),
+(32, '2021-02-02', 31),
+(33, '2022-03-28', 35),
+(34, '2020-11-29', 37),
+(35, '2021-01-15', 40),
+(36, '2022-03-31', 3),
+(37, '2020-05-28', 5),
+(38, '2021-07-12', 8),
+(39, '2022-02-17', 12),
+(40, '2020-04-30', 15),
+
+(41, '2021-11-29', 18),
+(42, '2022-01-03', 21),
+(43, '2020-06-15', 24),
+(44, '2021-09-27', 27),
+(45, '2022-02-07', 30),
+(46, '2020-04-19', 33),
+(47, '2021-12-16', 36),
+(48, '2022-05-11', 38),
+(49, '2020-07-03', 32),
+(50, '2021-08-22', 4),
+(51, '2023-01-01', 11),
+(52, '2023-01-01', 16),
+(53, '2023-01-01', 19),
+(54, '2023-01-01', 26),
+(55, '2023-01-01', 39);
+
+ 
+ 
+ INSERT INTO OrderQuantity (LaptopID, OrderID, Quantity)
+VALUES
+(1, 1, 1),
+(5, 2, 3),
+(10, 3, 5),
+(15, 4, 2),
+(20, 5, 4),
+(25, 6, 1),
+(30, 7, 7),
+(35, 8, 3),
+(40, 9, 9),
+(45, 10, 2),
+
+(1, 11, 1),
+(5, 12, 3),
+(10, 13, 5),
+(15, 14, 2),
+(20, 15, 4),
+(25, 16, 1),
+(30, 17, 7),
+(35, 18, 3),
+(40, 19, 9),
+(45, 20, 2),
+
+(1, 21, 1),
+(5, 22, 3),
+(10, 23, 5),
+(15, 24, 2),
+(20, 25, 4),
+(25, 26, 1),
+(30, 27, 7),
+(35, 28, 3),
+(40, 29, 9),
+(45, 30, 2),
+
+(1, 31, 1),
+(5, 32, 3),
+(10, 33, 5),
+(15, 34, 2),
+(20, 35, 4),
+(25, 36, 1),
+(30, 37, 7),
+(35, 38, 3),
+(40, 39, 9),
+(45, 40, 2),
+(1, 1, 1),
+(5, 2, 3),
+(10, 3, 5),
+(15, 4, 2),
+(20, 5, 4),
+(25, 6, 1),
+(30, 7, 7),
+(35, 8, 3),
+(40, 9, 9),
+(45, 10, 2),
+
+(1, 11, 1),
+(5, 12, 3),
+(10, 13, 5),
+(15, 14, 2),
+(20, 15, 4),
+(25, 16, 1),
+(30, 17, 7),
+(35, 18, 3),
+(40, 19, 9),
+(45, 20, 2),
+
+(1, 21, 1),
+(5, 22, 3),
+(10, 23, 5),
+(15, 24, 2),
+(20, 25, 4),
+(25, 26, 1),
+(30, 27, 7),
+(35, 28, 3),
+(40, 29, 9),
+(45, 30, 2),
+
+(1, 31, 1),
+(5, 32, 3),
+(10, 33, 5),
+(15, 34, 2),
+(20, 35, 4),
+(25, 36, 1),
+(30, 37, 7),
+(35, 38, 3),
+(40, 39, 9),
+(45, 40, 2),
+
+(1, 41, 1),
+(5, 42, 3),
+(10, 43, 5),
+(15, 44, 2),
+(20, 45, 4),
+(25, 46, 1),
+(30, 47, 7),
+(35, 48, 3),
+(40, 49, 9),
+(45, 50, 2),
+(1, 41, 1),
+(5, 42, 3),
+(10, 43, 5),
+(15, 44, 2),
+(20, 45, 4),
+(25, 46, 1),
+(30, 47, 7),
+(35, 48, 3),
+(40, 49, 9),
+(45, 50, 2),
+
+(1, 1, 1),
+(5, 2, 3),
+(10, 3, 5),
+(15, 4, 2),
+(20, 5, 4),
+(25, 6, 1),
+(30, 7, 7),
+(35, 8, 3),
+(40, 9, 9),
+(45, 10, 2),
+
+(1, 11, 1),
+(5, 12, 3),
+(10, 13, 5),
+(15, 14, 2),
+(20, 15, 4),
+(25, 16, 1),
+(30, 17, 7),
+(35, 18, 3),
+(40, 19, 9),
+(45, 20, 2),
+
+(1, 21, 1),
+(5, 22, 3),
+(10, 23, 5),
+(15, 24, 2),
+(20, 25, 4),
+(25, 26, 1),
+(30, 27, 7),
+(35, 28, 3),
+(40, 29, 9),
+(45, 30, 2),
+(1, 51, 3), 
+(5, 52, 2), 
+(10, 53, 1),
+(15, 54, 4), 
+(20, 55, 5);
+
+/*Query 1
+Description of query: Top 5 sellers in terms of units. 
+Objective of query: This query assists in understanding customer preferences,  and allocating resources effectively to maximize profitability. It also helps the company prioritize production and marketing efforts towards these top-performing laptop models.*/
+
+SELECT L.LaptopID, L.Model, L.Description, SUM(Qo.Quantity) TotalQuantity 
+FROM Laptop L 
+INNER JOIN OrderQuantity Qo ON Qo.LaptopID = L.LaptopID 
+GROUP BY L.LaptopID, L.Model 
+ORDER BY TotalQuantity DESC 
+LIMIT 5; 
+
+/*Query 2
+Description of query: Most popular brand. 
+Objective of query: The company can use this information to strengthen partnerships with popular brands and negotiate better deals. It also helps in understanding which brands resonate the most with customers, guiding decisions related to brand positioning, and branding strategies.*/
+
+SELECT B.Name as Brand, SUM(Qo.Quantity) TotalQuantity 
+FROM Brand B 
+JOIN Laptop L ON B.BrandID = L.BrandID 
+JOIN OrderQuantity Qo ON L.LaptopID = Qo.LaptopID 
+GROUP BY B.Name 
+ORDER BY TotalQuantity DESC; 
+
+/*Query 3
+Description of query: Top 5 Country/Provinces with the most sales in terms of Revenue.
+Objective of query: Helps to understand where most sales happen and orient marketing efforts. In this case, Quebec sales are way above other provinces sales.*/
+
+SELECT 
+    c.Country, 
+    c.Province, 
+    SUM(l.Price * oq.Quantity) AS TotalRevenue 
+FROM 
+    Customer c 
+JOIN 
+    OrderTable o ON c.CustomerID = o.CustomerID 
+JOIN 
+    OrderQuantity oq ON o.OrderID = oq.OrderID 
+JOIN 
+    Laptop l ON oq.LaptopID = l.LaptopID 
+GROUP BY 
+    c.Country, c.Province 
+ORDER BY 
+    TotalRevenue DESC 
+LIMIT 5;
+
+/*Query 4
+Description of query: Learning about the most popular GPU and CPU combination.
+Objective of query: To understand what the most popular GPU and CPU combination are will help understand what type of machine are the customer looking for, regardless of the brand.*/
+
+SELECT CPU.CPUModel, GPU.GPUModel, COUNT(OrderQuantity.LaptopID) AS TotalSales 
+FROM CPU 
+JOIN Laptop ON CPU.CPUID = Laptop.CPUID 
+JOIN GPU ON Laptop.GPUID = GPU.GPUID 
+JOIN OrderQuantity ON Laptop.LaptopID = OrderQuantity.LaptopID 
+GROUP BY CPU.CPUModel, GPU.GPUModel 
+ORDER BY TotalSales DESC 
+LIMIT 5; 
+
+/*Query 5
+Description of query: Find the 5 cheapest laptops with the highest GPUs.  
+Objective of query: This query could be useful for budget-conscious consumers or professionals who are seeking laptops that offer a balance between affordability and strong GPU capabilities, such as for gaming, video editing, or other graphics-intensive tasks. It aims to provide options that prioritize both cost-effectiveness and GPU performance.*/
+
+SELECT 
+    Laptop.LaptopID, 
+    Laptop.Size, 
+    Laptop.Model, 
+    Laptop.Yearz, 
+    Laptop.Price, 
+    Brand.Name AS Brand, 
+    GPU.GPUBrand AS GPUBrand, 
+    GPU.GPUModel AS GPUModel 
+FROM 
+    Laptop 
+    INNER JOIN Brand ON Laptop.BrandID = Brand.BrandID 
+    INNER JOIN GPU ON Laptop.GPUID = GPU.GPUID 
+ORDER BY 
+    GPU.GPUModel DESC,  
+    Laptop.Price ASC 
+LIMIT 5;   
+
+/*Query 6
+Description of query: Find all laptops with GPU brand AMD. 
+Objective of query: This query could be valuable for individuals or organizations looking for laptops specifically with AMD GPUs for purposes such as graphics-intensive tasks, gaming, or compatibility with certain software applications that are optimized for Intel graphics technology.*/
+
+SELECT * FROM Laptop 
+JOIN GPU ON Laptop.GPUID = GPU.GPUID 
+JOIN Brand ON GPU.GPUBrand = Brand.BrandID 
+WHERE Brand.Name = 'AMD'; 
+
+/*Query 7
+Description of query: Find laptop models and prices within a specified price range. 
+Objective of query: This query can enhance the user’s experience by helping them quickly locate laptops that match their budget constraints.*/
+
+SELECT Model, Price FROM Laptop WHERE Price BETWEEN 500 AND 1000; 
+
+/*Query 8
+Description of query: Find the top customer who has made the most purchases and also provide information about their most purchased laptop. 
+Objective of query: This query can help the company in recognizing high-value customers, understanding their preferences, and establishing a personalized customer experience. It could also be used for loyalty programs, targeted marketing, and improving customer retention strategies by offering products that align with the customer's preferences and purchasing behavior.*/
+
+SELECT Customer.Name AS CustomerName,  
+       COUNT(OrderQuantity.OrderID) AS TotalPurchases,  
+       Laptop.Model AS MostPurchasedLaptop  
+FROM Customer  
+INNER JOIN OrderTable ON Customer.CustomerID = OrderTable.CustomerID  
+INNER JOIN OrderQuantity ON OrderTable.OrderID = OrderQuantity.OrderID  
+INNER JOIN Laptop ON OrderQuantity.LaptopID = Laptop.LaptopID  
+GROUP BY Customer.CustomerID, Customer.Name, Laptop.Model  
+ORDER BY TotalPurchases DESC 
+LIMIT 1; 
+
+/*Query 9
+Description of query: Find the average price of laptops for each screen type. 
+Objective of query: This query can help in understanding pricing patterns and in optimizing pricing strategies for various laptop models. It provides insights into how different screen types impact the average price, allowing businesses to make informed decisions about product offerings and pricing adjustments.*/
+
+SELECT Screen.Type AS ScreenType, AVG(Laptop.Price) AS AveragePrice FROM Screen INNER JOIN Laptop ON Screen.ScreenID = Laptop.ScreenID GROUP BY Screen.Type; 
+
+/*Query 10
+Description of query: Find the total quantity of each laptop model ordered. 
+Objective of query: This query is useful for assessing the popularity and demand for different laptop models, identifying trends, optimizing inventory management, and making informed decisions about production and distribution strategies.*/
+
+SELECT Laptop.Model, SUM(OrderQuantity.Quantity) AS TotalQuantityOrdered FROM Laptop INNER JOIN OrderQuantity ON Laptop.LaptopID = OrderQuantity.LaptopID GROUP BY Laptop.Model ORDER BY TotalQuantityOrdered DESC; 
+
+/*Query 11
+Description of query: Find the top 5 laptop brands based on the total revenue generated from their laptop sales. 
+Objective of query: This query can identify the most financially successful laptop brands in terms of revenue, which can provide insights into market dominance, customer preferences, and brand performance. This information could be used for strategic planning, partnerships, investment decisions, and competitive analysis within the laptop industry.*/
+
+SELECT 
+    B.Name AS BrandName, 
+    SUM(L.Price * OQ.Quantity) AS TotalRevenue 
+FROM 
+    Brand B 
+JOIN 
+    Laptop L ON B.BrandID = L.BrandID 
+JOIN 
+    OrderQuantity OQ ON L.LaptopID = OQ.LaptopID 
+GROUP BY 
+    B.Name 
+ORDER BY 
+    TotalRevenue DESC 
+LIMIT 5; 
+
+/*Query 12
+Description of query: Find the laptops that have been ordered the most, along with the total quantity ordered for each laptop model. 
+Objective of query: This query can help in understanding the popularity and demand for different laptop models, which can be valuable for business decisions such as restocking, marketing strategies, and inventory management.*/
+
+SELECT 
+    Laptop.Model, 
+    SUM(OrderQuantity.Quantity) AS TotalQuantityOrdered 
+FROM 
+    Laptop 
+    INNER JOIN OrderQuantity ON Laptop.LaptopID = OrderQuantity.LaptopID 
+GROUP BY 
+    Laptop.Model 
+ORDER BY 
+    TotalQuantityOrdered DESC; 
+
+/*Query 13
+Description of query: Laptops with GPU and CPU from different brands. 
+Objective of query: This query helps highlight laptops that stand out in terms of customization and could attract a specific customer segment seeking variety.*/
+
+SELECT DISTINCT Laptop.LaptopID, Laptop.Model, Brand_GPU.Name AS GPUBrand, Brand_CPU.Name AS CPUBrand FROM Laptop JOIN GPU ON Laptop.GPUID = GPU.GPUID JOIN CPU ON Laptop.CPUID = CPU.CPUID JOIN Brand AS Brand_GPU ON GPU.GPUBrand = Brand_GPU.BrandID JOIN Brand AS Brand_CPU ON CPU.CPUBrand = Brand_CPU.BrandID  
+WHERE Brand_GPU.BrandID <> Brand_CPU.BrandID; 
+
+/*Query 14
+Description of query: Laptops with the highest total sales in each brand. 
+Objective of query: This query helps optimize product strategies and focus on popular brands and models. The company can allocate resources, marketing efforts, and inventory management to capitalize on successful models.*/
+
+SELECT b.Name AS BrandName, l.Model AS LaptopModel, SUM(oq.Quantity) AS TotalSales 
+FROM Brand b 
+JOIN Laptop l ON b.BrandID = l.BrandID 
+JOIN OrderQuantity oq ON l.LaptopID = oq.LaptopID 
+GROUP BY b.BrandID, l.LaptopID 
+HAVING SUM(oq.Quantity) = ( 
+    SELECT MAX(TotalSalesPerBrand) 
+    FROM ( 
+        SELECT l.BrandID, SUM(oq.Quantity) AS TotalSalesPerBrand 
+        FROM Laptop l 
+        JOIN OrderQuantity oq ON l.LaptopID = oq.LaptopID 
+        GROUP BY l.BrandID 
+    ) AS BrandSales 
+    WHERE BrandSales.BrandID = b.BrandID 
+) 
+ORDER BY BrandName; 
+
+/*Query 15
+Description of query: Customers based on their locations, including city, province, and country. 
+Objective of query: By understanding customer locations, the company can optimize its marketing campaigns. It can target regions with high customer concentrations for localized promotions, events, or partnerships. Additionally, regions with low customer concentrations can be targeted for expansion efforts to increase brand awareness and customer acquisition.*/
+
+SELECT 
+    City, 
+    Province, 
+    Country, 
+    COUNT(CustomerID) AS CustomerCount 
+FROM 
+    Customer 
+GROUP BY 
+    City, Province, Country 
+ORDER BY 
+    CustomerCount DESC; 
+
+/*Query 16
+Description of query: Laptops with the highest number of orders in the year with the lowest total sales. 
+Objective of query: The company gains insights into resilient and sought-after products. This information can guide promotional efforts, discounts, or marketing campaigns to boost sales during tough periods.*/
+
+SELECT l.LaptopID, l.Model, l.Yearz, SUM(q.Quantity) AS TotalOrders, MIN(YEAR(ot.Datez)) AS YearWithLowestSales 
+FROM Laptop l 
+JOIN OrderQuantity q ON l.LaptopID = q.LaptopID 
+JOIN OrderTable ot ON q.OrderID = ot.OrderID 
+GROUP BY l.LaptopID, l.Model, l.Yearz 
+HAVING MIN(YEAR(ot.Datez)) = ( 
+    SELECT MIN(YEAR(Datez)) 
+    FROM OrderTable 
+); 
+
+/*Query 17
+Description of query: Number of laptops sold each year. 
+Objective of query: This query helps the company analyze sales trends, demand fluctuations and market growth, aiming in resource allocation and production planning.*/
+
+SELECT YEAR(Datez) AS SalesYear, COUNT(DISTINCT LaptopID) AS NumberOfLaptopsSold 
+FROM OrderTable ot 
+JOIN OrderQuantity oq ON ot.OrderID = oq.OrderID 
+GROUP BY SalesYear 
+ORDER BY SalesYear;
+
+/*Query 18 
+Description of query: Orders with quantity higher than the average order quantity. 
+Objective of query: It allows the company to segment high-value customers for targeted marketing. It also enables the design of loyalty programs or incentives to encourage repeat purchases from these valuable customers. */
+
+SELECT o.OrderID, o.Datez, o.CustomerID, oq.Quantity 
+FROM OrderTable o 
+JOIN OrderQuantity oq ON o.OrderID = oq.OrderID 
+WHERE oq.Quantity > (SELECT AVG(Quantity) FROM OrderQuantity) 
+ORDER BY o.OrderID; 
+
+/*Query 19
+Description of query: Laptops with price above average and orders below average. 
+Objective of query: This query enables the company to adjust pricing strategies, improve product features, or create targeted marketing campaigns to increase the visibility and desirability of these laptops.*/
+
+SELECT l.LaptopID, l.Model, l.Price, AVG(oq.Quantity * l.Price) AS AvgOrderTotalPrice 
+FROM Laptop l 
+JOIN OrderQuantity oq ON l.LaptopID = oq.LaptopID 
+GROUP BY l.LaptopID, l.Model, l.Price 
+HAVING l.Price > (SELECT AVG(Price) FROM Laptop) 
+   AND AVG(oq.Quantity * l.Price) < (SELECT AVG(Quantity * Price) FROM OrderQuantity) 
+ORDER BY l.LaptopID; 
+
+/*Query 20
+Description of query: Retrieve the laptops with their respective brands and customer names for orders placed in 2022, along with the total quantity of each laptop ordered. 
+Objective of query: This query assists in evaluating the success of marketing campaigns, understanding customer preferences for that year, and planning for future inventory needs.*/
+
+SELECT l.LaptopID, l.Model, b.Name AS Brand, c.Name AS CustomerName, SUM(oq.Quantity) AS TotalQuantity 
+FROM Laptop l 
+JOIN Brand b ON l.BrandID = b.BrandID 
+JOIN OrderQuantity oq ON l.LaptopID = oq.LaptopID 
+JOIN OrderTable ot ON oq.OrderID = ot.OrderID 
+JOIN Customer c ON ot.CustomerID = c.CustomerID 
+WHERE YEAR(ot.Datez) = 2022 
+GROUP BY l.LaptopID, l.Model, b.Name, c.Name 
+ORDER BY l.LaptopID;
